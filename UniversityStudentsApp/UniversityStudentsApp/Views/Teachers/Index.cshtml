@@ -1,0 +1,112 @@
+﻿@*@model IEnumerable<UniversityStudentsApp.Models.Teacher>*@
+@model UniversityStudentsApp.ViewModels.TeacherFilterViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Professors</h1>
+
+<form asp-controller="Professors" asp-action="Index" method="get">
+    <p>
+        Professor Name: <input type="text" asp-for="NameSearch" />
+
+        <br />
+        Professors Degree:
+        <select asp-for="ProfessorDegree" asp-items="Model.Degrees">
+            <option value="">All</option>
+        </select>
+        Professors Academic Rank:
+        <select asp-for="ProfessorAcademicRank" asp-items="Model.AcademicRanks">
+            <option value="">All</option>
+        </select>
+
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Professors[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Professors[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Professors[0].Degree)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Professors[0].AcademicRank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Professors[0].OfficeNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Professors[0].HireDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Professors[0].Courses)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Professors) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Degree)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AcademicRank)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OfficeNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HireDate)
+            </td>
+
+            <td>
+                @if (item.FirstTeacherCourses != null)
+                {
+                    @foreach (var course in item.FirstTeacherCourses)
+                    {
+                        @if (course.Id != 0)
+                        {
+                            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id"> @course.Title</a> <br />
+                        }
+                    }
+                }
+
+            
+                @if (item.SecondTeacherCourses != null)
+                {
+                    @foreach (var course in item.SecondTeacherCourses)
+                    {
+                        @if (course.Id != 0)
+                        {
+                            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id"> @course.Title </a> <br />
+                        }
+                    }
+                }
+
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
